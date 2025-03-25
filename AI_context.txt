@@ -1,0 +1,293 @@
+.
+├── AI_context.txt
+├── AviGA3-BLE.ioc
+├── CMakeLists.txt
+├── CMakePresets.json
+├── Core
+│   ├── Inc
+│   │   ├── adc.h
+│   │   ├── app_common.h
+│   │   ├── app_conf.h
+│   │   ├── app_debug.h
+│   │   ├── app_entry.h
+│   │   ├── ble_custom.h
+│   │   ├── bmi2.h
+│   │   ├── bmi270.h
+│   │   ├── bmi270_common.h
+│   │   ├── bmi270_custom.h
+│   │   ├── bmi2_defs.h
+│   │   ├── common.h
+│   │   ├── dma.h
+│   │   ├── gpio.h
+│   │   ├── hw_conf.h
+│   │   ├── hw_if.h
+│   │   ├── i2c.h
+│   │   ├── i2c_custom.h
+│   │   ├── ipcc.h
+│   │   ├── main.h
+│   │   ├── meas.h
+│   │   ├── powerManagement.h
+│   │   ├── rf.h
+│   │   ├── rtc.h
+│   │   ├── spi.h
+│   │   ├── stm32_lpm_if.h
+│   │   ├── stm32wbxx_hal_conf.h
+│   │   ├── stm32wbxx_it.h
+│   │   ├── tim.h
+│   │   └── utilities_conf.h
+│   ├── Src
+│   │   ├── adc.c
+│   │   ├── app_debug.c
+│   │   ├── app_entry.c
+│   │   ├── ble_custom.c
+│   │   ├── bmi2.c
+│   │   ├── bmi270.c
+│   │   ├── bmi270_common.c
+│   │   ├── bmi270_custom.c
+│   │   ├── common.c
+│   │   ├── dma.c
+│   │   ├── gpio.c
+│   │   ├── hw_timerserver.c
+│   │   ├── i2c.c
+│   │   ├── i2c_custom.c
+│   │   ├── ipcc.c
+│   │   ├── main.c
+│   │   ├── meas.c
+│   │   ├── powerManagement.c
+│   │   ├── rf.c
+│   │   ├── rtc.c
+│   │   ├── spi.c
+│   │   ├── stm32_lpm_if.c
+│   │   ├── stm32wbxx_hal_msp.c
+│   │   ├── stm32wbxx_it.c
+│   │   ├── syscalls.c
+│   │   ├── sysmem.c
+│   │   ├── system_stm32wbxx.c
+│   │   └── tim.c
+│   └── Startup
+│       └── startup_stm32wb55cgux.s
+├── Drivers
+│   ├── CMSIS
+│   │   ├── Device
+│   │   │   └── ST
+│   │   │       └── STM32WBxx
+│   │   │           ├── Include
+│   │   │           │   ├── stm32wb55xx.h
+│   │   │           │   ├── stm32wbxx.h
+│   │   │           │   └── system_stm32wbxx.h
+│   │   │           └── LICENSE.txt
+│   │   ├── Include
+│   │   │   ├── cmsis_armcc.h
+│   │   │   ├── cmsis_armclang.h
+│   │   │   ├── cmsis_armclang_ltm.h
+│   │   │   ├── cmsis_compiler.h
+│   │   │   ├── cmsis_gcc.h
+│   │   │   ├── cmsis_iccarm.h
+│   │   │   ├── cmsis_version.h
+│   │   │   ├── core_armv81mml.h
+│   │   │   ├── core_armv8mbl.h
+│   │   │   ├── core_armv8mml.h
+│   │   │   ├── core_cm0.h
+│   │   │   ├── core_cm0plus.h
+│   │   │   ├── core_cm1.h
+│   │   │   ├── core_cm23.h
+│   │   │   ├── core_cm3.h
+│   │   │   ├── core_cm33.h
+│   │   │   ├── core_cm35p.h
+│   │   │   ├── core_cm4.h
+│   │   │   ├── core_cm7.h
+│   │   │   ├── core_sc000.h
+│   │   │   ├── core_sc300.h
+│   │   │   ├── mpu_armv7.h
+│   │   │   ├── mpu_armv8.h
+│   │   │   └── tz_context.h
+│   │   └── LICENSE.txt
+│   └── STM32WBxx_HAL_Driver
+│       ├── Inc
+│       │   ├── Legacy
+│       │   │   └── stm32_hal_legacy.h
+│       │   ├── stm32wbxx_hal.h
+│       │   ├── stm32wbxx_hal_adc.h
+│       │   ├── stm32wbxx_hal_adc_ex.h
+│       │   ├── stm32wbxx_hal_cortex.h
+│       │   ├── stm32wbxx_hal_def.h
+│       │   ├── stm32wbxx_hal_dma.h
+│       │   ├── stm32wbxx_hal_dma_ex.h
+│       │   ├── stm32wbxx_hal_exti.h
+│       │   ├── stm32wbxx_hal_flash.h
+│       │   ├── stm32wbxx_hal_flash_ex.h
+│       │   ├── stm32wbxx_hal_gpio.h
+│       │   ├── stm32wbxx_hal_gpio_ex.h
+│       │   ├── stm32wbxx_hal_hsem.h
+│       │   ├── stm32wbxx_hal_i2c.h
+│       │   ├── stm32wbxx_hal_i2c_ex.h
+│       │   ├── stm32wbxx_hal_ipcc.h
+│       │   ├── stm32wbxx_hal_pwr.h
+│       │   ├── stm32wbxx_hal_pwr_ex.h
+│       │   ├── stm32wbxx_hal_rcc.h
+│       │   ├── stm32wbxx_hal_rcc_ex.h
+│       │   ├── stm32wbxx_hal_rtc.h
+│       │   ├── stm32wbxx_hal_rtc_ex.h
+│       │   ├── stm32wbxx_hal_spi.h
+│       │   ├── stm32wbxx_hal_spi_ex.h
+│       │   ├── stm32wbxx_hal_tim.h
+│       │   ├── stm32wbxx_hal_tim_ex.h
+│       │   ├── stm32wbxx_ll_adc.h
+│       │   ├── stm32wbxx_ll_bus.h
+│       │   ├── stm32wbxx_ll_cortex.h
+│       │   ├── stm32wbxx_ll_crs.h
+│       │   ├── stm32wbxx_ll_dma.h
+│       │   ├── stm32wbxx_ll_dmamux.h
+│       │   ├── stm32wbxx_ll_exti.h
+│       │   ├── stm32wbxx_ll_gpio.h
+│       │   ├── stm32wbxx_ll_hsem.h
+│       │   ├── stm32wbxx_ll_i2c.h
+│       │   ├── stm32wbxx_ll_ipcc.h
+│       │   ├── stm32wbxx_ll_pwr.h
+│       │   ├── stm32wbxx_ll_rcc.h
+│       │   ├── stm32wbxx_ll_rtc.h
+│       │   ├── stm32wbxx_ll_system.h
+│       │   ├── stm32wbxx_ll_tim.h
+│       │   └── stm32wbxx_ll_utils.h
+│       ├── LICENSE.txt
+│       └── Src
+│           ├── stm32wbxx_hal.c
+│           ├── stm32wbxx_hal_adc.c
+│           ├── stm32wbxx_hal_adc_ex.c
+│           ├── stm32wbxx_hal_cortex.c
+│           ├── stm32wbxx_hal_dma.c
+│           ├── stm32wbxx_hal_dma_ex.c
+│           ├── stm32wbxx_hal_exti.c
+│           ├── stm32wbxx_hal_flash.c
+│           ├── stm32wbxx_hal_flash_ex.c
+│           ├── stm32wbxx_hal_gpio.c
+│           ├── stm32wbxx_hal_hsem.c
+│           ├── stm32wbxx_hal_i2c.c
+│           ├── stm32wbxx_hal_i2c_ex.c
+│           ├── stm32wbxx_hal_ipcc.c
+│           ├── stm32wbxx_hal_pwr.c
+│           ├── stm32wbxx_hal_pwr_ex.c
+│           ├── stm32wbxx_hal_rcc.c
+│           ├── stm32wbxx_hal_rcc_ex.c
+│           ├── stm32wbxx_hal_rtc.c
+│           ├── stm32wbxx_hal_rtc_ex.c
+│           ├── stm32wbxx_hal_spi.c
+│           ├── stm32wbxx_hal_spi_ex.c
+│           ├── stm32wbxx_hal_tim.c
+│           ├── stm32wbxx_hal_tim_ex.c
+│           ├── stm32wbxx_ll_adc.c
+│           └── stm32wbxx_ll_rcc.c
+├── Middlewares
+│   └── ST
+│       └── STM32_WPAN
+│           ├── ble
+│           │   ├── ble.h
+│           │   ├── ble_common.h
+│           │   ├── core
+│           │   │   ├── auto
+│           │   │   │   ├── ble_events.c
+│           │   │   │   ├── ble_events.h
+│           │   │   │   ├── ble_gap_aci.c
+│           │   │   │   ├── ble_gap_aci.h
+│           │   │   │   ├── ble_gatt_aci.c
+│           │   │   │   ├── ble_gatt_aci.h
+│           │   │   │   ├── ble_hal_aci.c
+│           │   │   │   ├── ble_hal_aci.h
+│           │   │   │   ├── ble_hci_le.c
+│           │   │   │   ├── ble_hci_le.h
+│           │   │   │   ├── ble_l2cap_aci.c
+│           │   │   │   ├── ble_l2cap_aci.h
+│           │   │   │   ├── ble_types.h
+│           │   │   │   └── ble_vs_codes.h
+│           │   │   ├── ble_bufsize.h
+│           │   │   ├── ble_core.h
+│           │   │   ├── ble_defs.h
+│           │   │   ├── ble_legacy.h
+│           │   │   ├── ble_std.h
+│           │   │   └── template
+│           │   │       ├── ble_const.h
+│           │   │       ├── compiler.h
+│           │   │       ├── osal.c
+│           │   │       └── osal.h
+│           │   └── svc
+│           │       ├── Inc
+│           │       │   ├── bas.h
+│           │       │   ├── bls.h
+│           │       │   ├── crs_stm.h
+│           │       │   ├── dis.h
+│           │       │   ├── eds_stm.h
+│           │       │   ├── hids.h
+│           │       │   ├── hrs.h
+│           │       │   ├── hts.h
+│           │       │   ├── ias.h
+│           │       │   ├── lls.h
+│           │       │   ├── mesh.h
+│           │       │   ├── motenv_stm.h
+│           │       │   ├── otas_stm.h
+│           │       │   ├── p2p_stm.h
+│           │       │   ├── svc_ctl.h
+│           │       │   ├── template_stm.h
+│           │       │   ├── tps.h
+│           │       │   ├── uuid.h
+│           │       │   └── zdd_stm.h
+│           │       └── Src
+│           │           ├── common_blesvc.h
+│           │           └── svc_ctl.c
+│           ├── interface
+│           │   └── patterns
+│           │       └── ble_thread
+│           │           ├── hw.h
+│           │           ├── shci
+│           │           │   ├── shci.c
+│           │           │   └── shci.h
+│           │           └── tl
+│           │               ├── hci_tl.c
+│           │               ├── hci_tl.h
+│           │               ├── hci_tl_if.c
+│           │               ├── mbox_def.h
+│           │               ├── shci_tl.c
+│           │               ├── shci_tl.h
+│           │               ├── shci_tl_if.c
+│           │               ├── tl.h
+│           │               └── tl_mbox.c
+│           ├── stm32_wpan_common.h
+│           └── utilities
+│               ├── dbg_trace.c
+│               ├── dbg_trace.h
+│               ├── otp.c
+│               ├── otp.h
+│               ├── stm_list.c
+│               ├── stm_list.h
+│               ├── stm_queue.c
+│               ├── stm_queue.h
+│               └── utilities_common.h
+├── STM32WB55CGUX_FLASH.ld
+├── STM32WB55CGUX_RAM.ld
+├── STM32_WPAN
+│   ├── App
+│   │   ├── app_ble.c
+│   │   ├── app_ble.h
+│   │   ├── ble_conf.h
+│   │   ├── ble_dbg_conf.h
+│   │   ├── custom_app.c
+│   │   ├── custom_app.h
+│   │   ├── custom_stm.c
+│   │   ├── custom_stm.h
+│   │   ├── template_server_app.h
+│   │   └── tl_dbg_conf.h
+│   └── Target
+│       └── hw_ipcc.c
+├── Utilities
+│   ├── lpm
+│   │   └── tiny_lpm
+│   │       ├── stm32_lpm.c
+│   │       └── stm32_lpm.h
+│   └── sequencer
+│       ├── stm32_seq.c
+│       └── stm32_seq.h
+├── cmake
+│   ├── gcc-arm-none-eabi.cmake
+│   └── st-project.cmake
+└── vcpkg-configuration.json
+
+40 directories, 251 files
