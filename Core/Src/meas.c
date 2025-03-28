@@ -106,7 +106,7 @@ void meas_Handler()
 	//Check for new DATA Interrupt
 	if(meas_data_flag == ON)
 	{
-		meas_fifoWTM_intRoutine();
+		meas_dataReady_intRoutine();
 
 		//Reset Flag
 		meas_data_flag = OFF;
