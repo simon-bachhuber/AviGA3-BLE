@@ -119,3 +119,28 @@ int8_t set_accel_gyro_config(struct bmi2_dev *dev, uint8_t imu_odr, uint8_t acc_
 }
 
 
+int8_t read_imu_data_direct(struct bmi2_dev *dev, struct bmi2_sens_axes_data *accel, struct bmi2_sens_axes_data *gyro)
+{
+    int8_t rslt;
+    uint8_t data[12] = {0}; // 6 bytes for accel, 6 bytes for gyro
+    
+    // Read accelerometer data - directly from the data registers
+    rslt = bmi2_get_regs(BMI2_ACC_X_LSB_ADDR, data, 6, dev);
+    if (rslt == BMI2_OK) {
+        // Parse accelerometer data
+        accel->x = (int16_t)(((uint16_t)data[1] << 8) | data[0]);
+        accel->y = (int16_t)(((uint16_t)data[3] << 8) | data[2]);
+        accel->z = (int16_t)(((uint16_t)data[5] << 8) | data[4]);
+        
+        // Read gyroscope data - directly from the data registers
+        rslt = bmi2_get_regs(BMI2_GYR_X_LSB_ADDR, &data[6], 6, dev);
+        if (rslt == BMI2_OK) {
+            // Parse gyroscope data
+            gyro->x = (int16_t)(((uint16_t)data[7] << 8) | data[6]);
+            gyro->y = (int16_t)(((uint16_t)data[9] << 8) | data[8]);
+            gyro->z = (int16_t)(((uint16_t)data[11] << 8) | data[10]);
+        }
+    }
+    
+    return rslt;
+}

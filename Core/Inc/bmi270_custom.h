@@ -68,6 +68,6 @@
 /******************************************************************************/
 uint8_t imu_init(struct bmi2_dev *bmi2_dev);
 int8_t set_accel_gyro_config(struct bmi2_dev *dev, uint8_t imu_odr, uint8_t acc_range, uint8_t gyr_range);
-
+int8_t read_imu_data_direct(struct bmi2_dev *dev, struct bmi2_sens_axes_data *accel, struct bmi2_sens_axes_data *gyro);
 
 #endif /* BMI270_CUSTOM_H */

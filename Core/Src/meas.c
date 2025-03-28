@@ -145,59 +145,68 @@ imu_sensor meas_initSensor(imu_sensor sensor,uint8_t sensor_nr)
 
 /*********************************************************************/
 
-//Start new measurement (Activate BMI20 and FIFO Interrupts)
-void meas_startMeasurement(struct bmi2_dev *bmi2_dev,  struct bmi2_fifo_frame *fifoframe)
+void meas_startMeasurement(struct bmi2_dev *bmi2_dev, struct bmi2_fifo_frame *fifoframe)
 {
-	//Status-Byte
-	uint8_t rslt;
+    // Status-Byte
+    uint8_t rslt;
 
-	/* Accel and gyro sensor are listed in array. */
-	uint8_t sensor_sel[2] = { BMI2_ACCEL, BMI2_GYRO };
+    /* Accel and gyro sensor are listed in array. */
+    uint8_t sensor_sel[2] = { BMI2_ACCEL, BMI2_GYRO };
 
-	/* Configuration settings for accel and gyro. */
-	rslt = set_accel_gyro_config(bmi2_dev, sensor.settings.odr, sensor.settings.acc_range, sensor.settings.gyr_range);
+    /* Configuration settings for accel and gyro. */
+    rslt = set_accel_gyro_config(bmi2_dev, sensor.settings.odr, sensor.settings.acc_range, sensor.settings.gyr_range);
 
-	/* Accel and Gyro enable must be done after setting configurations */
-	rslt = bmi270_sensor_enable(sensor_sel, 2, bmi2_dev);
+    /* Accel and Gyro enable must be done after setting configurations */
+    rslt = bmi270_sensor_enable(sensor_sel, 2, bmi2_dev);
 
-	/* Before setting FIFO, disable the advance power save mode. */
-	rslt = bmi2_set_adv_power_save(BMI2_DISABLE, bmi2_dev);
+    /* Before setting up, disable the advance power save mode. */
+    rslt = bmi2_set_adv_power_save(BMI2_DISABLE, bmi2_dev);
+    
+    // IMPORTANT: Disable FIFO entirely - we don't want to use it
+    rslt = bmi2_set_fifo_config(BMI2_FIFO_ALL_EN, BMI2_DISABLE, bmi2_dev);
+    
+    // Configure data ready interrupt instead of FIFO watermark
+    uint8_t data[1];
+    data[0] = 0b00000010; // Configure for data ready interrupt
+    bmi270_writeRegister(BMI2_INT1_IO_CTRL_ADDR, data, 1);
+    
+    // Configure the INT1 mapping for data ready interrupt
+    rslt = bmi2_map_data_int(BMI2_DRDY_INT, BMI2_INT1, bmi2_dev);
 
-	/* Initially disable all configurations in fifo. */
-	rslt = bmi2_set_fifo_config(BMI2_FIFO_ALL_EN, BMI2_DISABLE, bmi2_dev);
+    // Set measurement ON
+    sensor.active = ON;
 
-	/* Set FIFO configuration by enabling accel, gyro.*/
-	rslt = bmi2_set_fifo_config(BMI2_FIFO_ACC_EN | BMI2_FIFO_GYR_EN, BMI2_ENABLE, bmi2_dev);
+    // Start Sync Timer
+    HAL_TIM_Base_Start_IT(&htim16);
+}
 
-	/* To enable headerless mode, disable the header. */
-	if (rslt == BMI2_OK)
-	{
-		rslt = bmi2_set_fifo_config(BMI2_FIFO_HEADER_EN, BMI2_DISABLE, bmi2_dev);
-	}
-
-	/* FIFO water-mark interrupt is enabled. */
-	fifoframe->data_int_map = BMI2_FWM_INT;
-
-	/* Map water-mark interrupt to the required interrupt pin. */
-	rslt = bmi2_map_data_int(fifoframe->data_int_map, BMI2_INT1, bmi2_dev);
-
-	/* Set water-mark level. */
-	fifoframe->wm_lvl = BMI2_FIFO_WATERMARK_LEVEL;
-	fifoframe->length = BMI2_FIFO_RAW_DATA_USER_LENGTH;
-
-	/* Set the water-mark level if water-mark interrupt is mapped. */
-	rslt = bmi2_set_fifo_wm(fifoframe->wm_lvl, bmi2_dev);
-
-	//Configure INT1 for FIFO_WATERMARK_INT as Output
-	uint8_t data[1];
-	data[0] = 0b00001010;
-	bmi270_writeRegister(BMI2_INT1_IO_CTRL_ADDR, data , 1);
-
-	//Set measurement ON
-	sensor.active = ON;
-
-	//Start Sync Timer
-	HAL_TIM_Base_Start_IT(&htim16);
+// Replace FIFO watermark routine with a data ready routine
+void meas_dataReady_intRoutine()
+{
+    struct bmi2_sens_axes_data accel_data;
+    struct bmi2_sens_axes_data gyro_data;
+    
+    // Read data directly from the IMU registers
+    read_imu_data_direct(&bmi2_dev, &accel_data, &gyro_data);
+    
+    // Copy data to the sensor struct (just a single reading)
+    sensor.accel[0] = accel_data;
+    sensor.gyro[0] = gyro_data;
+    
+    // Set frame length to 1 (only one data point)
+    sensor.accel_frame_length = 1;
+    
+    // Get Sensor arrival time
+    sensor.time_arrival = TIM16->CNT;
+    sensor.time_arrival_overflow = sync_timer_overflow;
+    
+    // Transfer the data
+    if(sensor.transfer_mode == MODE_I2C) {
+        i2c_requestCommunication();
+    }
+    else if(sensor.transfer_mode == MODE_BLE) {
+        ble_sendData();
+    }
 }
 
 //MEAS: Stop measurement

@@ -82,5 +82,6 @@ void meas_startMeasurement(struct bmi2_dev *bmi2_dev,  struct bmi2_fifo_frame *f
 void meas_stopMeasurement(struct bmi2_dev *bmi2_dev,  struct bmi2_fifo_frame *fifoframe);
 
 void meas_fifoWTM_intRoutine();
+void meas_dataReady_intRoutine();
 
 #endif /* MEAS_H */
